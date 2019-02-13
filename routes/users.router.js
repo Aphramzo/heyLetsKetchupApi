@@ -1,49 +1,22 @@
 const express = require('express');
+const userController = require('../controllers/user.controller');
+const userMiddleware = require('../middleware/user.middleware');
 
 const createRoute = (User) => {
   const userRouter = express.Router();
-
-  userRouter.use('/users/:id', (req, res, next) => {
-    User.findById(req.params.id, (err, user) => {
-      if (err) {
-        return res.status(400).send(err);
-      }
-
-      if (user) {
-        req.user = user;
-        return next();
-      }
-      return res.sendStatus(404);
-    });
-  });
+  const controller = userController(User);
+  const middleware = userMiddleware(User);
+  userRouter.use('/users/:id', middleware);
   userRouter
     .route('/users')
-    .get((req, res) => {
-      User.find(req.query, (err, users) => {
-        if (err) {
-          return res.status(400).send(err);
-        }
-        return res.json(users);
-      });
-    })
-    .post((req, res) => {
-      const user = new User(req.body);
-      user.save();
-      return res.status(201).json(user);
-    });
+    .get(controller.getList)
+    .post(controller.create);
 
   userRouter
     .route('/users/:id')
-    .get((req, res) => res.json(req.user))
-    .delete((req, res) => {
-      req.user.remove((err) => {
-        if (err) {
-          return res.status(400).send(err);
-        }
-
-        return res.sendStatus(204);
-      });
-    });
+    .get(controller.get)
+    .patch(controller.update)
+    .delete(controller.remove);
   return userRouter;
 };
 
