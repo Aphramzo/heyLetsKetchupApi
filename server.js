@@ -13,8 +13,10 @@ app.use(bodyParser.json());
 const { UserSchema } = require('./models/user.model');
 
 const userRouter = require('./routes/users.router')(UserSchema);
+const groupRouter = require('./routes/groups.router');
 
 app.use('', userRouter);
+app.use('', groupRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World');
