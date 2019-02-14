@@ -20,6 +20,8 @@ SECRET=ToEveryone
 
 ```
 
+Once your .env is setup correctly, simple run
+
 ```bash
 yarn
 ```
