@@ -10,6 +10,6 @@ const personModel = {
 const personSchema = new Schema(personModel);
 
 module.exports = {
-  PersonSchema: mongoose.model('User', personSchema),
+  PersonSchema: mongoose.model('Person', personSchema),
   PersonModel: personModel,
 };
