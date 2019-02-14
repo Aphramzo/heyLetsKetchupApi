@@ -1,25 +1,25 @@
-const userController = (User) => {
+const personController = (Person) => {
   const getList = (req, res) => {
-    User.find(req.query, (err, users) => {
+    Person.find(req.query, (err, people) => {
       if (err) {
         res.status(400);
         return res.send(err);
       }
-      return res.json(users);
+      return res.json(people);
     });
   };
 
-  const get = (req, res) => res.json(req.user);
+  const get = (req, res) => res.json(req.person);
 
   const create = (req, res) => {
-    const user = new User(req.body);
-    if (!user.firstName) {
+    const person = new Person(req.body);
+    if (!person.firstName) {
       res.status(400);
-      return res.send('User must have a first name');
+      return res.send('Person must have a first name');
     }
-    user.save();
+    person.save();
     res.status(201);
-    return res.json(user);
+    return res.json(person);
   };
 
   const update = (req, res) => {
@@ -28,17 +28,17 @@ const userController = (User) => {
       // eslint-disable-next-line
       delete req.body._id;
     }
-    const user = Object.assign(req.user, req.body);
-    user.save((err) => {
+    const person = Object.assign(req.person, req.body);
+    person.save((err) => {
       if (err) {
         return res.status(400).send(err);
       }
-      return res.send(user);
+      return res.send(person);
     });
   };
 
   const remove = (req, res) => {
-    req.user.remove((err) => {
+    req.person.remove((err) => {
       if (err) {
         return res.status(400).send(err);
       }
@@ -56,4 +56,4 @@ const userController = (User) => {
   };
 };
 
-module.exports = userController;
+module.exports = personController;

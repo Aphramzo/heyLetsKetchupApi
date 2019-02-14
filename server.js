@@ -11,12 +11,12 @@ const port = process.env.PORT || 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const { UserSchema } = require('./models/user.model');
+const { PersonSchema } = require('./models/person.model');
 
-const userRouter = require('./routes/users.router')(UserSchema);
+const personRouter = require('./routes/person.router')(PersonSchema);
 const groupRouter = require('./routes/groups.router');
 
-app.use('', userRouter);
+app.use('', personRouter);
 app.use('', groupRouter);
 
 app.get('/', (req, res) => {

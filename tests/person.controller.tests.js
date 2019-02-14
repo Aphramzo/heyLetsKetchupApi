@@ -1,11 +1,11 @@
 const sinon = require('sinon');
 const should = require('should'); // eslint-disable-line
-const userController = require('../controllers/user.controller');
+const personController = require('../controllers/person.controller');
 
-describe('User Controller', () => {
+describe('Person Controller', () => {
   describe('Post', () => {
     it('First name is required', () => {
-      function User() {
+      function Person() {
         this.save = () => {};
       }
       const req = {
@@ -18,7 +18,7 @@ describe('User Controller', () => {
         status: sinon.spy(),
       };
 
-      const controller = userController(User);
+      const controller = personController(Person);
       controller.create(req, res);
 
       res.status.calledWith(400).should.equal(true);
