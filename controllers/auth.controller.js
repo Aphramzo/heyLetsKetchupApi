@@ -2,6 +2,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserSchema } = require('../models/user.model');
 
+const generateToken = userId => jwt.sign({ id: userId }, process.env.SECRET, {
+  expiresIn: 86400, // expires in 24 hours
+});
+
 exports.register = (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
@@ -13,18 +17,32 @@ exports.register = (req, res) => {
       password: hashedPassword,
     },
     (err, user) => {
-      if (err) return res.status(400).send('Unable to register this user');
+      // TODO: Better messaging around this user already exists
+      if (err) return res.status(400).send(`Unable to register this user: ${err}`);
       // create a token
       // eslint-disable-next-line
-      const token = jwt.sign({ id: user._id }, process.env.SECRET, {
-        expiresIn: 86400, // expires in 24 hours
-      });
+      const token = generateToken(user._id);
       return res.status(200).send({
         token,
         user,
       });
     },
   );
+};
+
+exports.login = (req, res) => {
+  UserSchema.findOne({ emailAddress: req.body.emailAddress }, (err, user) => {
+    if (err) return res.status(500).send('Error on the server.');
+    if (!user) return res.status(401).send({ auth: false, token: null });
+
+    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+
+    // eslint-disable-next-line
+    const token = generateToken(user._id);
+
+    return res.status(200).send({ auth: true, token });
+  });
 };
 
 exports.me = (req, res) => {

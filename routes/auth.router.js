@@ -6,6 +6,9 @@ const authRouter = express.Router();
 authRouter.use(bodyParser.urlencoded({ extended: false }));
 authRouter.use(bodyParser.json());
 
-authRouter.get('/me', authController.me).post('/register', authController.register);
+authRouter
+  .get('/me', authController.me)
+  .post('/register', authController.register)
+  .post('/login', authController.login);
 
 module.exports = authRouter;

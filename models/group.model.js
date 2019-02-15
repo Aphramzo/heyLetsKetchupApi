@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const groupModel = {
-  name: { type: String },
+  name: { type: String, required: true },
 };
 
 const groupSchema = new Schema(groupModel);

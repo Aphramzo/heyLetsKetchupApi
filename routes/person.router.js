@@ -1,11 +1,14 @@
 const express = require('express');
 const personController = require('../controllers/person.controller');
 const personMiddleware = require('../middleware/person.middleware');
+const { verifyToken } = require('../middleware/auth.middleware');
 
 const createRoute = (Person) => {
   const personRouter = express.Router();
   const controller = personController(Person);
   const middleware = personMiddleware(Person);
+  personRouter.use('/people/:id', verifyToken);
+  personRouter.use('/people', verifyToken);
   personRouter.use('/people/:id', middleware);
   personRouter
     .route('/people')
