@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userGroupAssignmentModel = {
-  name: { type: String },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   group: { type: Schema.Types.ObjectId, ref: 'Group' },
+  admin: { type: Schema.Types.Boolean, default: false },
 };
 
 const userGroupAssignmentSchema = new Schema(userGroupAssignmentModel);

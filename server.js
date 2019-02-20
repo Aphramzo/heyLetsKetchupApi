@@ -12,14 +12,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const { PersonSchema } = require('./models/person.model');
+const routers = require('./routes');
 
-const personRouter = require('./routes/person.router')(PersonSchema);
-const groupRouter = require('./routes/groups.router');
-const authRouter = require('./routes/auth.router');
-
-app.use('', personRouter);
-app.use('', groupRouter);
-app.use('', authRouter);
+app.use('', routers.personRouter(PersonSchema));
+app.use('', routers.groupRouter);
+app.use('', routers.authRouter);
+app.use('', routers.userGroupAssignmentRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World');

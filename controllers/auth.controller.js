@@ -17,7 +17,10 @@ exports.register = (req, res) => {
       password: hashedPassword,
     },
     (err, user) => {
-      // TODO: Better messaging around this user already exists
+      if (err && err.code === 11000) {
+        return res.status(400).send('It looks like you already have an account');
+      }
+
       if (err) return res.status(400).send(`Unable to register this user: ${err}`);
       // create a token
       // eslint-disable-next-line
