@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+
 require('dotenv').config();
 
 const app = express();
@@ -19,7 +21,8 @@ app.use('', routers.groupRouter);
 app.use('', routers.authRouter);
 app.use('', routers.userGroupAssignmentRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+const swaggerDocument = require('./swagger.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.listen(port, () => {});
