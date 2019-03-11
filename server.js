@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -12,6 +13,7 @@ const port = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 const { PersonSchema } = require('./models/person.model');
 const routers = require('./routes');
